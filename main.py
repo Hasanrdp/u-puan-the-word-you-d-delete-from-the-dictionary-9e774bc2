@@ -58,6 +58,7 @@ def verify(path, data):
         raise SystemExit("entry is only white space")
     if text != WORD:
         raise SystemExit("entry text differs from the pinned word")
+    return True
 
 
 def main():
@@ -68,7 +69,9 @@ def main():
     path = os.path.join(out_dir, "entry.txt")
     with open(path, "wb") as fh:
         fh.write(data)
-    verify(path, data)
+    verified = verify(path, data)
+    if not verified:
+        raise SystemExit("read-back verification failed")
     print(f"wrote {path}: {WORD!r} ({EXPECTED_BYTES} bytes, sha256 {EXPECTED_SHA256[:12]}...)")
 
 
